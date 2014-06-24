@@ -67,11 +67,14 @@ module.exports = function (grunt) {
       },
       livereload: {
         options: {
-          open: true,
-          base: [
-            '.tmp',
-            '<%= yeoman.app %>'
-          ]
+          //open: true, //Open the served page in your default browser.
+          middleware: function (connect) {
+              return [
+                connect.static(require('path').resolve('.tmp')),
+                connect.static(require('path').resolve('app')),
+                require('./server')
+              ];
+          }
         }
       },
       test: {
