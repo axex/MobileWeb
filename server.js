@@ -1,10 +1,19 @@
-var express = require("express");
+var express = require('express');
+var bodyParser = require('body-parser');
 var server = express();
-var rootPath = __dirname;
+var api = {};
 
-server.get("/", function (req, res) {
-    res.status(200).send("Hi");
-});
+// API Factory
+api.session = require('./api/session');
+api.extension = require('./api/extension');
 
-console.log("Server is running on: 3000");
-server.listen(3000);
+// Middleware
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({extended: true}));
+
+// Router resister
+api.session(server);
+api.extension(server);
+
+
+module.exports = server;
